@@ -357,7 +357,129 @@ Likely >80% subagent-specific. May not be worth adapting. The user should decide
 
 ---
 
-## 10. Delivering the Final Output
+## 10. Korean Skill Deprecation
+
+The existing Korean-language adapted skills (`superpowers-core`, `superpowers-code`) are **deprecated** and will be replaced by the English-language adaptations produced by this guide. After the new adapted skills are verified and installed:
+
+1. Remove any references to `superpowers-core` and `superpowers-code` from CLAUDE.md files or custom skill configurations
+2. Delete the Korean skill files
+3. Update any documentation that references the Korean versions
+
+---
+
+## 11. Version Management Strategy
+
+To track the upstream source and keep adaptations in sync:
+
+### 11.1 Record the source commit
+
+Every adaptation run MUST record the upstream commit hash. Create a `VERSION.md` file in the `superpowers-adapted/` root:
+
+```markdown
+# Superpowers Adaptation Version
+
+- **Source repository**: https://github.com/obra/superpowers
+- **Source commit**: `<full SHA>`
+- **Source commit date**: `<YYYY-MM-DD>`
+- **Adaptation date**: `<YYYY-MM-DD>`
+- **Adaptation guide version**: v1.1
+```
+
+### 11.2 Checking for updates
+
+To check if the upstream has changed:
+
+```bash
+cd /tmp/superpowers-source
+git fetch origin
+git log <recorded-SHA>..origin/main --oneline -- skills/
+```
+
+If there are new commits touching `skills/`, a re-adaptation is needed.
+
+### 11.3 Re-adaptation procedure
+
+1. Record the new upstream commit hash
+2. For each changed skill, diff the upstream changes: `git diff <old-SHA>..<new-SHA> -- skills/<skill-name>/`
+3. Apply only the upstream delta to the adapted version — do NOT re-run the full adaptation from scratch unless the changes are structural
+4. Update `VERSION.md` with the new commit hash and date
+
+### 11.4 Tagging
+
+After each successful adaptation, tag the commit in this repository:
+
+```bash
+git tag -a "superpowers-v<upstream-version>-adapted" -m "Adapted from obra/superpowers <short-SHA>"
+```
+
+---
+
+## 12. Testing & Verification
+
+Adapted skills cannot be unit-tested in the traditional sense — they are natural language instructions. Instead, use a layered verification approach:
+
+### 12.1 Static Verification (automated, run on every adaptation)
+
+A grep-based lint pass that ensures no forbidden patterns remain:
+
+```bash
+# Run from superpowers-adapted/ directory
+echo "=== Forbidden Pattern Check ==="
+grep -rn "TodoWrite\|TodoRead" --include="SKILL.md" && echo "FAIL: TodoWrite/TodoRead found" || echo "PASS: No TodoWrite/TodoRead"
+grep -rn "invoke superpowers:\|Use the Skill tool\|Invoke.*skill tool" --include="SKILL.md" && echo "FAIL: Skill tool invocation found" || echo "PASS: No Skill tool invocations"
+grep -rn "claude -p\|dispatch.*subagent\|spawn.*subagent\|implementer subagent" --include="SKILL.md" && echo "FAIL: Subagent dispatch found" || echo "PASS: No subagent dispatch"
+grep -rn "EnterPlanMode" --include="SKILL.md" && echo "FAIL: EnterPlanMode found" || echo "PASS: No EnterPlanMode"
+grep -rn "SUBAGENT-STOP" --include="SKILL.md" && echo "FAIL: SUBAGENT-STOP found" || echo "PASS: No SUBAGENT-STOP"
+grep -rn "Gemini CLI\|\.codex/\|opencode\|GEMINI\.md\|AGENTS\.md" --include="SKILL.md" && echo "FAIL: Platform-specific refs found" || echo "PASS: No platform-specific refs"
+echo "=== Structural Check ==="
+for dir in */; do
+  [ -f "$dir/SKILL.md" ] && echo "PASS: $dir has SKILL.md" || echo "FAIL: $dir missing SKILL.md"
+  head -1 "$dir/SKILL.md" 2>/dev/null | grep -q "^---" && echo "PASS: $dir has frontmatter" || echo "FAIL: $dir missing frontmatter"
+done
+```
+
+### 12.2 Diff Review (manual, per skill)
+
+After adapting each skill, generate a diff against the original:
+
+```bash
+diff -u /tmp/superpowers-source/skills/<skill>/SKILL.md superpowers-adapted/<skill>/SKILL.md
+```
+
+Verify:
+- Only lines matching Section 4.2 patterns were changed
+- No original content was accidentally deleted
+- Replacement text follows the prescribed patterns
+
+### 12.3 Smoke Test (manual, for HIGH priority skills)
+
+For each HIGH priority skill, run one real task using the adapted skill:
+
+| Skill | Smoke Test |
+|---|---|
+| `verification-before-completion` | Complete any small task, then apply the verification checklist |
+| `test-driven-development` | Write a small feature using the TDD process from the skill |
+| `systematic-debugging` | Debug any known test failure using the debugging process |
+| `brainstorming` | Brainstorm a small feature design and verify the process flow works |
+| `writing-plans` | Write a plan document for a small task |
+
+Pass criteria: The process completes without referencing missing tools or broken steps.
+
+### 12.4 Companion File Integrity
+
+Verify all referenced companion files exist:
+
+```bash
+for skill_dir in superpowers-adapted/*/; do
+  grep -oP '(?<=\()[\w-]+\.md(?=\))' "$skill_dir/SKILL.md" 2>/dev/null | while read ref; do
+    [ -f "$skill_dir/$ref" ] && echo "PASS: $skill_dir$ref exists" || echo "FAIL: $skill_dir$ref MISSING"
+  done
+done
+```
+
+---
+
+## 13. Delivering the Final Output
 
 After all skills are adapted:
 
@@ -371,3 +493,7 @@ The user may want to:
 - Use them as CLAUDE.md references in Claude Code projects
 
 Support whatever installation path they choose.
+
+---
+
+*Guide version: v1.1 — Added sections 10 (Korean deprecation), 11 (version management), 12 (testing & verification).*
