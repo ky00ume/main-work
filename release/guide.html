@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RISUAI 바이브 코딩 파워스킬 가이드</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-card2: #1c2128;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --link: #58a6ff;
+      --accent: #388bfd;
+      --accent2: #56d364;
+      --accent3: #e3b341;
+      --code-bg: #1e2430;
+      --table-stripe: #1c2330;
+      --tag-bg: #21262d;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Noto Sans KR', sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      text-align: center;
+      padding: 48px 0 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    .site-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .site-header .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin: 4px 2px 0;
+    }
+
+    /* ── Section card ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 30px;
+      margin-bottom: 28px;
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--link);
+      margin: 20px 0 10px;
+    }
+    .card p { margin-bottom: 12px; }
+    .card ul, .card ol {
+      padding-left: 22px;
+      margin-bottom: 12px;
+    }
+    .card li { margin-bottom: 6px; }
+
+    /* ── Platform tabs ── */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .platform-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .platform-card .platform-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .platform-card ol {
+      padding-left: 20px;
+      color: var(--text);
+    }
+    .platform-card li { margin-bottom: 8px; font-size: 0.9rem; }
+    .platform-card .note {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      background: var(--code-bg);
+      border-left: 3px solid var(--accent);
+      padding: 8px 12px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; margin-top: 8px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    thead tr { background: var(--bg-card2); }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tbody tr:nth-child(odd) { background: var(--table-stripe); }
+    tbody tr:hover { background: #21262d; }
+    td code, th code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.83rem;
+      font-family: 'Consolas', 'Fira Code', monospace;
+      color: #e6edf3;
+      white-space: nowrap;
+    }
+
+    /* ── Code block ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      margin: 14px 0;
+      font-size: 0.86rem;
+      line-height: 1.6;
+      font-family: 'Consolas', 'Fira Code', monospace;
+      color: #e6edf3;
+    }
+    .code-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 6px 14px;
+      margin-bottom: -1px;
+      display: inline-block;
+    }
+
+    /* ── Tip box ── */
+    .tip {
+      background: #122d23;
+      border: 1px solid #2ea043;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 0.9rem;
+    }
+    .tip strong { color: var(--accent2); }
+
+    .warn {
+      background: #2b1a00;
+      border: 1px solid var(--accent3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 0.9rem;
+    }
+    .warn strong { color: var(--accent3); }
+
+    /* ── Step list ── */
+    .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+    .steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    /* ── License ── */
+    .license {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 28px;
+      margin-top: 40px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .license .license-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .license p { margin-bottom: 6px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .card { padding: 18px 14px; }
+      .site-header h1 { font-size: 1.4rem; }
+      .platform-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <h1>🤖 RISUAI 바이브 코딩 파워스킬 가이드</h1>
+    <p class="subtitle">CLI 없이 Claude · GPT · Gemini 공홈에서 바로 사용하는 AI 코딩 파워스킬</p>
+    <div style="margin-top: 12px;">
+      <span class="badge">바이브 코딩</span>
+      <span class="badge">RISUAI</span>
+      <span class="badge">Claude</span>
+      <span class="badge">GPT</span>
+      <span class="badge">Gemini</span>
+    </div>
+  </header>
+
+  <!-- ── 1. 소개 ── -->
+  <section class="card" id="intro">
+    <h2>📖 소개</h2>
+    <p>
+      이 파워스킬 패키지는 <a href="https://github.com/obra/superpowers" target="_blank">obra/superpowers</a> 원본에서
+      <strong>CLI · 터미널 · 복잡한 설치 과정이 필요한 부분을 모두 제거</strong>하고,
+      <strong>Claude · GPT · Gemini 공식 홈페이지 또는 API에서 바로 사용</strong>할 수 있도록 개조한 수정본입니다.
+    </p>
+    <p>
+      프로그래밍 경험이 전혀 없는 초심자도 AI와 함께 <strong>바이브 코딩</strong>을 바로 시작할 수 있으며,
+      RISUAI의 <strong>모듈, 플러그인, 봇 카드</strong> 등 다양한 콘텐츠 제작에 활용할 수 있습니다.
+    </p>
+    <div class="tip">
+      <strong>💡 핵심 전제</strong><br />
+      배포 파일 중 <code>risuai-manual.skill</code>은 <strong>RISUAI 실전 매뉴얼</strong>입니다.
+      RISUAI 관련 작업을 할 때는 이 스킬을 반드시 함께 업로드한 상태에서 파워스킬을 사용하세요.
+      AI가 RISUAI의 봇 카드 구조, 모듈, 플러그인 체계를 정확히 이해한 채로 작업합니다.
+    </div>
+  </section>
+
+  <!-- ── 2. 배포 파일 ── -->
+  <section class="card" id="files">
+    <h2>📦 배포 파일 설명</h2>
+    <p>아래 4개 파일을 AI에 업로드하면 파워스킬이 활성화됩니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>파일명</th>
+            <th>역할</th>
+            <th>업로드 필요 시점</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>superpowers-core.md</code></td>
+            <td>핵심 스킬 — 스킬 사용법, 검증(Verification), TDD, 체계적 디버깅</td>
+            <td>항상 업로드</td>
+          </tr>
+          <tr>
+            <td><code>superpowers-skills.md</code></td>
+            <td>워크플로 스킬 — 브레인스토밍, 플랜 작성, 실행, 코드리뷰, Git 워크플로우 등</td>
+            <td>항상 업로드</td>
+          </tr>
+          <tr>
+            <td><code>superpowers-authoring.md</code></td>
+            <td>스킬 작성 가이드 — 새로운 파워스킬을 직접 만들 때 필요</td>
+            <td>스킬 작성 시에만</td>
+          </tr>
+          <tr>
+            <td><code>risuai-manual.skill</code></td>
+            <td>RISUAI 실전 매뉴얼 — 봇 카드 구조, 모듈, 플러그인, 로어북 등 상세 명세</td>
+            <td>RISUAI 작업 시 필수</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn" style="margin-top: 16px;">
+      <strong>⚠️ 주의</strong><br />
+      처음에는 <code>superpowers-core.md</code>, <code>superpowers-skills.md</code>,
+      <code>risuai-manual.skill</code> 이 <strong>3개만</strong> 업로드해도 충분합니다.
+      스킬을 직접 만들 계획이 있을 때만 <code>superpowers-authoring.md</code>를 추가하세요.
+    </div>
+  </section>
+
+  <!-- ── 3. 플랫폼별 사용법 ── -->
+  <section class="card" id="platforms">
+    <h2>🔧 플랫폼별 사용법</h2>
+
+    <div class="platform-grid">
+
+      <!-- Claude -->
+      <div class="platform-card">
+        <div class="platform-title">
+          <span>🟣</span> Claude (claude.ai)
+        </div>
+        <ol class="steps" style="list-style: none; padding: 0;">
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#7c3aed; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">1</span>claude.ai 접속 후 <strong>Projects</strong> 탭으로 이동</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#7c3aed; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">2</span>새 프로젝트 생성 (또는 기존 프로젝트 선택)</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#7c3aed; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">3</span><strong>Project Knowledge</strong>에 파일 3개 업로드</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#7c3aed; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">4</span>프로젝트 내 대화에서 바로 사용!</li>
+        </ol>
+        <div class="note">
+          Project 기능이 없다면 대화창 하단 📎 첨부 버튼으로 파일을 직접 올려도 됩니다.<br/>
+          <strong>스킬 작성 시</strong>에만 <code>superpowers-authoring.md</code> 추가
+        </div>
+      </div>
+
+      <!-- GPT -->
+      <div class="platform-card">
+        <div class="platform-title">
+          <span>🟢</span> GPT (chatgpt.com)
+        </div>
+        <ol class="steps" style="list-style: none; padding: 0;">
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#10a37f; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">1</span>chatgpt.com 접속</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#10a37f; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">2</span>대화창 📎 버튼으로 파일 3개 첨부</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#10a37f; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">3</span>또는 <strong>GPTs 빌더</strong>에서 파일을 Knowledge로 추가</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#10a37f; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">4</span>대화 시작!</li>
+        </ol>
+        <div class="note">
+          <strong>Custom Instructions</strong>에 파워스킬 내용 요약을 붙여 넣으면 매 대화에서 자동 적용됩니다.
+        </div>
+      </div>
+
+      <!-- Gemini -->
+      <div class="platform-card">
+        <div class="platform-title">
+          <span>🔵</span> Gemini (gemini.google.com)
+        </div>
+        <ol class="steps" style="list-style: none; padding: 0;">
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#1a73e8; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">1</span>gemini.google.com 접속</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#1a73e8; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">2</span>대화창 📎 버튼으로 파일 첨부</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#1a73e8; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">3</span>또는 <strong>Gems</strong> 기능에서 파일을 지식으로 추가</li>
+          <li><span style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:#1a73e8; color:#fff; font-size:0.75rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:8px;">4</span>대화 시작!</li>
+        </ol>
+        <div class="note">
+          <strong>AI Studio</strong>(aistudio.google.com)에서는 System Instructions 필드에 파일 내용을 붙여 넣어 활용할 수 있습니다.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 4. 사용 예시 ── -->
+  <section class="card" id="examples">
+    <h2>💬 사용 예시</h2>
+    <p>아래 예시 프롬프트를 그대로 복사해서 AI에 입력해 보세요.</p>
+
+    <h3>예시 1 — 시뮬레이션 봇 제작 시작</h3>
+    <div class="code-label">프롬프트 복사</div>
+    <pre>RISUAI에서 사용할 시뮬레이션 봇을 만들고 싶어.
+유저가 판타지 세계관에서 마법사 길드에 입단하는 시나리오야.
+브레인스토밍부터 시작해줘.</pre>
+
+    <h3>예시 2 — 기존 봇 카드에 모듈 추가</h3>
+    <div class="code-label">프롬프트 복사</div>
+    <pre>이 봇 카드에 감정 추적 모듈을 추가하고 싶어.
+risuai-manual을 참고해서 모듈 구조에 맞게 설계해줘.</pre>
+
+    <h3>예시 3 — 플러그인 개발 (TDD 방식)</h3>
+    <div class="code-label">프롬프트 복사</div>
+    <pre>RISUAI용 주사위 굴리기 플러그인을 만들고 싶어.
+플러그인 구조 설명부터 시작하고, TDD 방식으로 개발 계획을 세워줘.</pre>
+
+    <div class="tip" style="margin-top: 16px;">
+      <strong>💡 팁</strong> — 대화 시작 전에 AI에게 다음 문장을 먼저 보내면 좋습니다:<br />
+      <em>"업로드한 스킬 파일들을 읽고, 관련 스킬이 있으면 반드시 따라서 진행해줘."</em>
+    </div>
+  </section>
+
+  <!-- ── 5. 바이브 코딩 팁 ── -->
+  <section class="card" id="tips">
+    <h2>🎯 초심자를 위한 바이브 코딩 팁</h2>
+
+    <h3>바이브 코딩이란?</h3>
+    <p>
+      코드를 직접 작성하는 대신, <strong>AI와 대화하면서 원하는 결과를 만들어 나가는</strong> 개발 방식입니다.
+      프로그래밍 지식이 없어도, AI에게 원하는 것을 말로 설명하면 AI가 코드를 대신 만들어 줍니다.
+      파워스킬은 이 AI의 작업 품질을 전문가 수준으로 끌어올려 줍니다.
+    </p>
+
+    <h3>파워스킬이 하는 일</h3>
+    <p>
+      파워스킬을 업로드하면 AI가 다음을 자동으로 수행합니다:
+    </p>
+    <ul>
+      <li>✅ 작업 전 브레인스토밍으로 방향을 먼저 잡습니다</li>
+      <li>✅ 체계적인 계획(플랜)을 세운 뒤 단계적으로 실행합니다</li>
+      <li>✅ 결과물이 나오면 스스로 검증하고 오류를 수정합니다</li>
+      <li>✅ 코드가 있다면 TDD(테스트 주도 개발) 방식으로 품질을 높입니다</li>
+      <li>✅ 무언가 막히면 체계적인 디버깅 방법으로 문제를 추적합니다</li>
+    </ul>
+
+    <h3>잘 쓰는 방법</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>팁</th><th>설명</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>구체적으로 요청하기</td>
+            <td>
+              "봇 만들어줘" 보다는<br/>
+              "판타지 세계관, 마법사 길드 입단 시나리오, 감정 추적 포함한 봇 카드 만들어줘"처럼 상세하게
+            </td>
+          </tr>
+          <tr>
+            <td>단계적으로 진행하기</td>
+            <td>한 번에 모든 것을 요청하지 말고, 브레인스토밍 → 플랜 → 실행 → 검증 순서로 진행하세요</td>
+          </tr>
+          <tr>
+            <td>결과 확인하기</td>
+            <td>AI가 생성한 결과를 RISUAI에 직접 붙여 넣고 테스트해 보세요. 이상하면 수정 요청하면 됩니다</td>
+          </tr>
+          <tr>
+            <td>스킬 명시적으로 요청</td>
+            <td>"브레인스토밍 스킬을 써줘", "플랜 먼저 세워줘" 같이 특정 스킬을 요청할 수도 있습니다</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 6. 라이선스 ── -->
+  <div class="license" id="license">
+    <div class="license-title">⚖️ 라이선스</div>
+    <p><strong>CC BY-NC-SA 4.0</strong></p>
+    <p>CC BY-NC-SA 4.0 국제 라이선스에 따라 이용 가능한 저작물입니다.</p>
+    <p>본 저작물은 아카라이브 AI 채팅 채널을 위해 공개되었습니다.</p>
+    <p>타 커뮤니티/채널에 공유·배포 시 원작자와 출처를 명시해야 하며, 상업적 이용은 불가합니다.</p>
+    <p>원본 저작물(출력물 제외)을 변형·2차 배포할 경우, 동일한 CCL 조건을 적용해야 합니다.</p>
+  </div>
+
+</div>
+</body>
+</html>
